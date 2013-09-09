@@ -3,14 +3,12 @@ let s:unite_source = {
 \ }
 
 function! s:unite_source.gather_candidates(args, context)
-  let paths = system('cmus-remote -C "save -l -"')
-  let music_list = map(split(paths, '\n'), '[fnamemodify(v:val, ":r"), fnamemodify(v:val, ":p")]')
-
-  return map(music_list, '{
-  \   "word": v:val[0],
+  let paths = split(system('cmus-remote -C "save -l -"'), '\n')
+  return map(paths, '{
+  \   "word": v:val,
   \   "source": "cmus",
   \   "kind": "command",
-  \   "action__command": "call system(\"cmus-remote -C ''player-play ".v:val[1]."''\")",
+  \   "action__command": "call system(\"cmus-remote -C ''player-play ".v:val."''\")",
   \ }')
 endfunction
 
